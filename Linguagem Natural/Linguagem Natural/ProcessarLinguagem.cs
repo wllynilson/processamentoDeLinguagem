@@ -12,26 +12,18 @@ namespace Linguagem_Natural
     {
         static void Main(string[] args)
         {
-               Cabecalho();
+            Cabecalho();
             LerArquivoJson("conversas.json");
             LerArquivoJson("produtos.json");
             LerArquivoJson("acoes.json");
-<<<<<<< HEAD
 
-            ProcessaEstatisticas("conversas.json","acoes.json");
-=======
             ProcessaEstatisticas("conversas.json");
->>>>>>> 28dc1c94f76f7e5362d653108c88fb96c2056069
+            ProcessaEstatisticas("conversas.json");
         }
         static void Cabecalho()
         {
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             string json = @"{ ""Disciplina"" : ""Linguagens Formais"", ""Professor"" : ""Jackson Gomes"", ""Alunos"": ""[Ewerton Santiago, Marcos Mourão, Maria do Carmo, Wllynilson Carneiro]"" }";
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> 28dc1c94f76f7e5362d653108c88fb96c2056069
 
             dynamic resultado = serializer.DeserializeObject(json);
             Console.WriteLine("-> -> Processamento de linguagem natural <- <-");
@@ -65,25 +57,32 @@ namespace Linguagem_Natural
             }
         }
 
-<<<<<<< HEAD
-        static void ProcessaEstatisticas(string dialogo, string acoes)
+        static void ProcessaEstatisticas(string dialogo)
         {
-            //string expressao = "";
+         
             //nova instancia de Regex
             var rgx = new Regex(@"([Oo]i, eu sou [?oa] [A-Za-z]*)|([Oo]i, sou o [A-Za-z]*)|([Ee]u sou o [A-Za-z]*)|(sou [o|a] [A-Za-z]*)+(. Gostaria de )|(e queria)|(\w+)");
             var actions = new Regex(@"(comprar)|(saber)|(vender)|(gostaria)|(desejo)|(valor)|(pagamento)");
-
+            string teste = @"(comprar) | (saber) | (vender) | (gostaria) | (desejo) | (valor) | (pagamento)";
             //adiciona o arquivo 'acoes' para começar a processa-lo
-            var arquivo = rgx.Matches(acoes);
+            var arquivo = rgx.Matches(dialogo);
 
             //novo dicionário com 'chave valor'
             Dictionary<int, string> dic = new Dictionary<int, string>();
 
-            //iteração sobre o arquivo percorrendo palavra por palavra
-            foreach(Match item in arquivo)
+            char delimitador = '|';
+            String[] acoes = teste.Split(delimitador);
+            foreach( var substring in acoes)
             {
-                dic.Add(int.Parse(item.Groups[0].Value), item.Groups[1].Value);
-                Console.WriteLine(dic);                
+                Console.WriteLine(substring);
+            }
+
+
+            //iteração sobre o arquivo percorrendo palavra por palavra
+            foreach (Match item in arquivo)
+            {
+                //dic.Add(int.Parse(item.Groups[1].Value), item.Groups[2].Value);
+                //Console.WriteLine(dic);
             }
 
 
@@ -91,29 +90,6 @@ namespace Linguagem_Natural
             Console.WriteLine(m);
             Console.ReadKey();
             //Console.WriteLine(rgx);
-=======
-        static void ProcessaEstatisticas(string dialogo)
-        {
-            //string expressao = "";
-            //nova instancia de Regex
-            var rgx = new Regex(@"([Oo]i, eu sou [?oa] [A-Za-z]*)");
-
-            var primeiroEncontrado = rgx.Match(dialogo);
-            var encontrados = rgx.Matches(dialogo);
-            //Match m = rgx.Match(dialogo);
-
-            Dictionary<int, string> dic = new Dictionary<int, string>();
-
-            foreach (Match item in encontrados)
-            {
-                dic.Add(int.Parse(item.Groups[1].Value), item.Groups[2].Value);
-                Console.WriteLine(dic);
-            }
-                
-            Console.WriteLine(primeiroEncontrado);
-            Console.WriteLine(encontrados);
->>>>>>> 28dc1c94f76f7e5362d653108c88fb96c2056069
-            Console.ReadKey();
-        }
+        }        
     }
 }
