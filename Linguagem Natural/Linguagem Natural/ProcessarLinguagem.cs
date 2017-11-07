@@ -13,12 +13,12 @@ namespace Linguagem_Natural
         static void Main(string[] args)
         {
             Cabecalho();
-            LerArquivoJson("conversas.json");
-            LerArquivoJson("produtos.json");
-            LerArquivoJson("acoes.json");
+            LerArquivo();
+            processa();
 
-            ProcessaEstatisticas("conversas.json");
-            ProcessaEstatisticas("conversas.json");
+           
+            //ProcessaEstatisticas("conversas.txt");
+            //ProcessaEstatisticas("acoes.txt");
         }
         static void Cabecalho()
         {
@@ -42,54 +42,71 @@ namespace Linguagem_Natural
 
         }
 
-        static void LerArquivoJson(string arquivo)
+        static void LerArquivo()
         {
-            JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-
-            using (StreamReader r = new StreamReader(arquivo))
+            if (File.Exists("conversas.txt"))
             {
-                string json = r.ReadToEnd();
-                dynamic array = serializer.DeserializeObject(json);
-                Console.WriteLine("");
-                Console.WriteLine(serializer.Serialize(array));
-                Console.WriteLine("");
-                Console.ReadKey();
+                Stream entrada = File.Open("conversas.txt", FileMode.Open);
+                StreamReader leitor = new StreamReader(entrada);
+
+                string linha = leitor.ReadLine();
+
+                while (linha != null)
+                {
+                    Console.WriteLine(linha);
+                    linha = leitor.ReadLine();
+                    Console.ReadKey();
+                }
+
+                leitor.Close();
+                entrada.Close();
             }
         }
 
         static void ProcessaEstatisticas(string dialogo)
         {
-         
+            
             //nova instancia de Regex
-            var rgx = new Regex(@"([Oo]i, eu sou [?oa] [A-Za-z]*)|([Oo]i, sou o [A-Za-z]*)|([Ee]u sou o [A-Za-z]*)|(sou [o|a] [A-Za-z]*)+(. Gostaria de )|(e queria)|(\w+)");
-            var actions = new Regex(@"(comprar)|(saber)|(vender)|(gostaria)|(desejo)|(valor)|(pagamento)");
+            var rgx = new Regex(@"([Oo]i, eu sou [?oa] [A-Za-z]*)|([Oo]i, sou o [A-Za-z]*)|([Ee]u sou o [A-Za-z]*)|(sou [o|a] [A-Za-z]*)+(. Gostaria de )|(e queria)|(\w+)");            
+
+            //açoes direto na string
             string teste = @"(comprar) | (saber) | (vender) | (gostaria) | (desejo) | (valor) | (pagamento)";
-            //adiciona o arquivo 'acoes' para começar a processa-lo
-            var arquivo = rgx.Matches(dialogo);
 
-            //novo dicionário com 'chave valor'
-            Dictionary<int, string> dic = new Dictionary<int, string>();
+            //açoes direto de arquivo
+            string teste2 = @"acoes.txt";
 
-            char delimitador = '|';
-            String[] acoes = teste.Split(delimitador);
-            foreach( var substring in acoes)
+
+
+            
+        }
+
+        static void processa()
+        {
+
+            string pattern = @"[Oo]i, eu sou [ao]|[Ee]u sou [oa]|[Ss]ou|(\w+)^|, [Gg]ostaria de|e|(\w+)^|uma|valor|um|do|o produto|(\w+)";            
+
+            string input = @"Oi, eu sou o jackson,
+                            gostaria de comprar uma televisao Jackson, 
+                            comprar televisao Zania saber valor geladeira
+                            Oi, eu sou a Karol, quero um freezer
+                            Comprar dvd
+                            Eu sou a Maria, gostaria de saber do sofa
+                            Sou Rafael e queria o produto notebook
+                            Goku comprar lampada
+                            Vegeta comprar racao
+                            Madimbu comprar pastel
+                            Picolo comprar arroz";
+            
+
+            foreach (Match m in Regex.Matches(input, pattern))
             {
-                Console.WriteLine(substring);
+                Console.WriteLine("'{0}' ", m.Groups[3].Value);
+                Console.WriteLine();
             }
-
-
-            //iteração sobre o arquivo percorrendo palavra por palavra
-            foreach (Match item in arquivo)
-            {
-                //dic.Add(int.Parse(item.Groups[1].Value), item.Groups[2].Value);
-                //Console.WriteLine(dic);
-            }
-
-
-            Match m = rgx.Match(dialogo);
-            Console.WriteLine(m);
             Console.ReadKey();
-            //Console.WriteLine(rgx);
-        }        
+
+            string[] t = input.Split(' ');
+
+        }
     }
 }
