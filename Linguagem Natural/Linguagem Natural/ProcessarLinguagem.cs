@@ -16,14 +16,11 @@ namespace Linguagem_Natural
             LerArquivo();
             processa();
 
-           
-            //ProcessaEstatisticas("conversas.txt");
-            //ProcessaEstatisticas("acoes.txt");
         }
         static void Cabecalho()
         {
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            string json = @"{ ""Disciplina"" : ""Linguagens Formais"", ""Professor"" : ""Jackson Gomes"", ""Alunos"": ""[Ewerton Santiago, Marcos Mourão, Maria do Carmo, Wllynilson Carneiro]"" }";
+            string json = @"{ ""Disciplina"" : ""Linguagens Formais"", ""Professor"" : ""Jackson Gomes"", ""Alunos"": ""[Ewerton Santiago, Marcos Mourão, Rodrigo Figueiredo, Wllynilson Carneiro]"" }";
 
             dynamic resultado = serializer.DeserializeObject(json);
             Console.WriteLine("-> -> Processamento de linguagem natural <- <-");
@@ -85,17 +82,7 @@ namespace Linguagem_Natural
 
             string pattern = @"[Oo]i, eu sou [ao]|[Ee]u sou [oa]|[Ss]ou|(\w+)^|, [Gg]ostaria de|e|(\w+)^|uma|valor|um|do|o produto|(\w+)";            
 
-            string input = @"Oi, eu sou o jackson,
-                            gostaria de comprar uma televisao Jackson, 
-                            comprar televisao Zania saber valor geladeira
-                            Oi, eu sou a Karol, quero um freezer
-                            Comprar dvd
-                            Eu sou a Maria, gostaria de saber do sofa
-                            Sou Rafael e queria o produto notebook
-                            Goku comprar lampada
-                            Vegeta comprar racao
-                            Madimbu comprar pastel
-                            Picolo comprar arroz";
+            string input = @"Oi, eu sou o jackson, gostaria de comprar uma televisao Jackson, comprar televisao Zania saber valor geladeira Oi, eu sou a Karol, quero um freezer Comprar dvd Eu sou a Maria, gostaria de saber do sofa Sou Rafael e queria o produto notebook Goku comprar lampada Vegeta comprar racao Madimbu comprar pastel Picolo comprar arroz";
             
 
             foreach (Match m in Regex.Matches(input, pattern))
@@ -107,6 +94,26 @@ namespace Linguagem_Natural
 
             string[] t = input.Split(' ');
 
+            Console.WriteLine("================= Imprimir Verbos ==================");
+            foreach (string word in t)
+            {
+                if (word.Equals("comprar") || word.Equals("saber") || word.Equals("vender") || word.Equals("pagar") || word.Equals("desejar") || word.Equals("valor") )
+                {
+                    Console.WriteLine(word);
+                }
+                    
+            }
+            Console.ReadKey();
+
+            Console.WriteLine("================= Imprimir Quantidade de Vendas ==================");
+            foreach (string word in t)
+            {
+                if (word.Equals("comprar") || word.Equals("saber") || word.Equals("vender") || word.Equals("pagar") || word.Equals("desejar") || word.Equals("valor"))
+                {
+                    Console.WriteLine(word);
+                }
+
+            }
         }
     }
 }
